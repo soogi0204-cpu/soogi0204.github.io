@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심플 가위바위보 게임</title>
+    <style>
+        /* CSS: 디자인 */
+        body {
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .game-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .display {
+            font-size: 3rem;
+            margin: 20px 0;
+            min-height: 80px;
+        }
+
+        .result-text {
+            font-size: 1.5rem;
+            height: 40px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: white;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        button:hover { background-color: #0056b3; }
+        button:active { transform: scale(0.95); }
+
+        .reset-btn {
+            margin-top: 20px;
+            background-color: #6c757d;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h2>가위 바위 보!</h2>
+        
+        <div class="score-board">
+            <div>나: <span id="user-score">0</span></div>
+            <div>컴퓨터: <span id="com-score">0</span></div>
+        </div>
+
+        <div class="display" id="display">❔</div>
+        <div class="result-text" id="result-text">준비되셨나요?</div>
+
+        <div class="buttons">
+            <button onclick="play('가위')">가위</button>
+            <button onclick="play('바위')">바위</button>
+            <button onclick="play('보')">보</button>
+        </div>
+
+        <button class="reset-btn" onclick="resetGame()">점수 초기화</button>
+    </div>
+
+    <script>
+        // JavaScript: 로직
+        let userScore = 0;
+        let comScore = 0;
+
+        const choices = ['가위', '바위', '보'];
+        const icons = { '가위': '✌️', '바위': '✊', '보': '✋' };
+
+        function play(userChoice) {
+            const comChoice = choices[Math.floor(Math.random() * 3)];
+            
+            // 화면에 선택 아이콘 표시
+            document.getElementById('display').innerText = `${icons[userChoice]} vs ${icons[comChoice]}`;
+
+            let result = "";
+            
+            if (userChoice === comChoice) {
+                result = "무승부입니다! 🤝";
+                document.getElementById('result-text').style.color = "black";
+            } else if (
+                (userChoice === '가위' && comChoice === '보') ||
+                (userChoice === '바위' && comChoice === '가위') ||
+                (userChoice === '보' && comChoice === '바위')
+            ) {
+                result = "당신이 이겼습니다! 🎉";
+                userScore++;
+                document.getElementById('result-text').style.color = "#28a745";
+            } else {
+                result = "컴퓨터가 이겼습니다! 🤖";
+                comScore++;
+                document.getElementById('result-text').style.color = "#dc3545";
+            }
+
+            // 결과 반영
+            document.getElementById('result-text').innerText = result;
+            document.getElementById('user-score').innerText = userScore;
+            document.getElementById('com-score').innerText = comScore;
+        }
+
+        function resetGame() {
+            userScore = 0;
+            comScore = 0;
+            document.getElementById('user-score').innerText = "0";
+            document.getElementById('com-score').innerText = "0";
+            document.getElementById('display').innerText = "❔";
+            document.getElementById('result-text').innerText = "초기화되었습니다.";
+            document.getElementById('result-text').style.color = "black";
+        }
+    </script>
+</body>
+</html>
